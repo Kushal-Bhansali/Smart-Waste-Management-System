@@ -1,0 +1,5 @@
+
+interface Lookout {
+   
+    int scanPerimeter();
+}
