@@ -2,3 +2,5 @@ Collection Event executed by: krish
 Bin B001 emptied successfully.
 Collection Event executed by: Kushal
 Bin B001 emptied successfully.
+Collection Event executed by: Krish
+Bin B001 emptied successfully.

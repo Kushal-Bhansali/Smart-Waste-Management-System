@@ -10,8 +10,8 @@ public class SmartWasteManagement {
         Scanner scanner = new Scanner(System.in); 
         AnalyticsEngine engine = new AnalyticsEngine();
         
-        WasteBin bin1 = new WasteBin("B001", "organic", 100.0);
-        WasteBin bin2 = new WasteBin("B002", "recyclable", 150.0, 50.0); 
+        WasteBin bin1 = new WasteBin("B001", "organic", 100.0, "BITS Pilani, Goa Campus");
+        WasteBin bin2 = new WasteBin("B002", "recyclable", 150.0, 50.0, "Goa"); 
         
         System.out.println("Welcome to Smart Waste Management System");
         System.out.print("Enter your username: ");
