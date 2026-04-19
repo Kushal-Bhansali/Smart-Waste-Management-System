@@ -6,7 +6,8 @@ public class WasteBin {
     private Double capacity; 
     private Double currentLevel;
     private Boolean isDamaged; 
-    
+    private String location;
+    //maintenance array for maintenance log of bins
     private MaintenanceLog[] maintenanceHistory = new MaintenanceLog[10];
     private int logCount = 0;
 
@@ -21,17 +22,18 @@ public class WasteBin {
             return date + ": " + issue; 
         }
     }
-
-    public WasteBin(String binId, String type, Double capacity) {
+    //constructor for wastebin
+    public WasteBin(String binId, String type, Double capacity, String location) {
         this.binId = binId;
         this.type = type;
         this.capacity = capacity;
         this.currentLevel = 0.0;
         this.isDamaged = false;
+        this.location=location;
     }
-
-    public WasteBin(String binId, String type, Double capacity, Double currentLevel) {
-        this(binId, type, capacity);
+    //overloaded constructor corresponding to wastebin
+    public WasteBin(String binId, String type, Double capacity, Double currentLevel, String location) {
+        this(binId, type, capacity, location);
         this.currentLevel = currentLevel;
     }
 
@@ -44,6 +46,10 @@ public class WasteBin {
 
     public void emptyBin() { this.currentLevel = 0.0; }
 
+    public void addMaintenanceRecord(String issue) {
+        addMaintenanceRecord("Unknown Date", issue);
+    }
+    //corresponding overloaded methods
     public void addMaintenanceRecord(String date, String issue) {
         if (logCount < maintenanceHistory.length) {
             maintenanceHistory[logCount++] = new MaintenanceLog(date, issue);
@@ -52,17 +58,13 @@ public class WasteBin {
             System.out.println("Maintenance log is full for bin: " + binId);
         }
     }
-
-    public void addMaintenanceRecord(String issue) {
-        addMaintenanceRecord("Unknown Date", issue);
-    }
-
     public void addMaintenanceRecord(String date, String... issues) {
         for (int i = 0; i < issues.length; i++) {
             addMaintenanceRecord(date, issues[i]); 
         }
     }
 
+    //getters for wastebin variables to be accessed by other classes
     public String getBinId() { 
         return binId; 
     }
@@ -82,7 +84,12 @@ public class WasteBin {
     public Boolean getIsDamaged() { 
         return isDamaged; 
     }
+    
     public Boolean getStatus() { 
         return currentLevel >= capacity; 
     } 
+    
+    public String getLocation() {
+        return location;
+    }
 }
