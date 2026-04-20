@@ -47,7 +47,9 @@ public class WasteBin {
         this.currentLevel += amount;
     }
 
-    public void emptyBin() { this.currentLevel = 0.0; }
+    public void emptyBin() { 
+        this.currentLevel = 0.0; 
+    }
 
     public void addMaintenanceRecord(String issue) {
         addMaintenanceRecord("Unknown Date", issue);
@@ -67,6 +69,9 @@ public class WasteBin {
         }
     }
 
+    public boolean isEmpty() { 
+        return this.currentLevel == 0.0; 
+    }
     public String getBinId() {
         return binId; 
     }

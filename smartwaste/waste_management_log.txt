@@ -1,2 +1,8 @@
-Bin B002: Bin emptied by staff
-Bin B004: Bin emptied by Y
+Bin B001: Bin emptied by Bob
+Bin B003: Bin emptied by David
+Bin B002: Bin emptied by Miller
+Bin B006: Bin emptied by Rajat
+Bin B004: Bin emptied by Bob
+Bin B005: Bin emptied by Miller
+Bin B007: Bin emptied by Bob
+Bin B008: Bin emptied by Miller

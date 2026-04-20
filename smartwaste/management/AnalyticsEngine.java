@@ -43,17 +43,15 @@ class AnalyticsEngine implements Reportable, AlertSystem {
     public void logMissedPickups(WasteBin[] missedBinIds) {
         System.out.print("ALERT: Missed pickups for bins: ");
         for (WasteBin bin : missedBinIds) {
-            System.out.print(bin.getBinId() + " ");
+            System.out.println(bin.getBinId() + " " + bin.getLocation());
         }
         System.out.println();
     }
 
-    @Override
     public void generateSummary() { 
         printStats(true); 
     }
 
-    @Override
     public void triggerAlert(String message, String severity) {
         System.out.println("[" + severity.toUpperCase() + " ALERT] " + message);
     }

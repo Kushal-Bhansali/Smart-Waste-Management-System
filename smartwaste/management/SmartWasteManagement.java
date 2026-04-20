@@ -7,7 +7,7 @@ import java.util.*;
 
 class SmartWasteManagement {
     int employeeCount = 0;
-
+    final int MAX_CAPACITY = 3;
     void registerEmployee(String username, String role, User[] users) throws ArrayIndexOutOfBoundsException {
         Scanner sc1 = new Scanner(System.in);
         if (employeeCount >= users.length) {
@@ -67,8 +67,7 @@ class SmartWasteManagement {
         System.out.println("Welcome to Smart Waste Management System");
         System.out.print("Enter number of employees to register: ");
         numEmployees = sc.nextInt();
-        // Forcing missed bin pickups to test alert system
-        numBins = numEmployees + 3;
+        numBins = rand.nextInt(numEmployees+2);
         users = new User[numEmployees];
         bins = new WasteBin[numBins];
         for (int i = 0; i < numBins; i++) {
@@ -117,26 +116,33 @@ class SmartWasteManagement {
         }
 
         // Simulate collection
-
-        //Fix collection, implement cyclic array logic to ensure all staff get a chance to collect and handle location mismatches gracefully
         int binsCollected = 0;
-        for (User user : users) {
-            if (user instanceof CollectionStaff) {
-                for (WasteBin currentBin: bins){
-                    if (currentBin.getCurrentLevel() <= 0) {
-                        continue; 
-                    }
-                    try {
-                        system.performCollection(currentBin, user);
-                        engine.recordCollection(currentBin); 
-                        binsCollected++;
-                        break; 
+        for(int i = 0; i < system.MAX_CAPACITY; i++) {
+            for (User user : users) {
+                int currentBinIndex = 0;
+                if (user instanceof CollectionStaff) {
+                    boolean collectionAttempted = false;
+                    int attempts = 0;
+                    while (!collectionAttempted && attempts < bins.length) {
+                        WasteBin currentBin = bins[currentBinIndex];
                         
-                    } catch (UnauthorizedAccessException e) {
-                        if (e.getMessage().contains("location mismatch")) {
-                            continue; 
-                        } else {
-                            System.out.println(e.getMessage());
+                            
+                        try {
+                            if (!currentBin.isEmpty()) {
+                                system.performCollection(currentBin, user);
+                                engine.recordCollection(currentBin);
+                                binsCollected++;
+                                collectionAttempted = true;
+                            }
+                        } catch (UnauthorizedAccessException e) {
+                            if (e.getMessage().contains("location mismatch")) {
+                                continue;
+                            } else {
+                                System.out.println(e.getMessage());
+                            }
+                        } finally {
+                            currentBinIndex = (currentBinIndex + 1) % bins.length;
+                            attempts++;
                         }
                     }
                 }
@@ -145,13 +151,18 @@ class SmartWasteManagement {
 
         // Simulate missed pickups
         WasteBin[] missedBins = new WasteBin[bins.length - binsCollected];
-        int missedIndex = 0;
-        for (int i = binsCollected; i < bins.length; i++) {
-            bins[i].addMaintenanceRecord((new Date()).toString(), "Missed pickup", "Staff shortage");
-            missedBins[missedIndex++] = bins[i];
+        if(missedBins.length == 0) {
+            System.out.println("All bins were collected successfully. No missed pickups to report.");
         }
-
-        engine.logMissedPickups(missedBins);
+        else{
+            int missedIndex = 0;
+            for (int i = 0; i < bins.length; i++) {
+                if(bins[i].isEmpty()) continue;
+                bins[i].addMaintenanceRecord((new Date()).toString(), "Missed pickup", "Staff shortage");
+                missedBins[missedIndex++] = bins[i];
+            }
+            engine.logMissedPickups(missedBins);
+        }
         System.out.println("\nEnter name of user to access reports: ");
         String userName = sc.next();
         
